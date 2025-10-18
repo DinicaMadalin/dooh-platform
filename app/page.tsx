@@ -5,8 +5,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
       <div className="text-center">
         <h1 className="mb-4 text-5xl font-bold text-gray-800">
-
-          Hope NOT!
+          I Hope NOT!
         </h1>
         <img
           src="https://i.imgflip.com/a9hopp.jpg"

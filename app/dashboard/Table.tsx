@@ -6,7 +6,6 @@ interface TableProps {
 }
 
 export default function Table({ view, data }: TableProps) {
-  console.log("Table data for view", view, ":", data); // Debug log
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-md">
