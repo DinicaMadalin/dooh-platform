@@ -117,17 +117,11 @@ DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co
 # Upstash Redis Configuration
 UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
-
+```
 
 ### 4. Database Setup
 
-Copy the SQL schema from `database/schema.sql` and run it in your Supabase project:
-
-**Option 1 - Supabase Dashboard:**
-1. Go to SQL Editor in your Supabase dashboard
-2. Paste the schema and click Run
-
-**Option 2 - Terminal (psql):**
+**Option - Terminal (psql):**
 ```bash
 psql "postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:5432/postgres"
 # then query(SELECT * FROM <TABLE>)
