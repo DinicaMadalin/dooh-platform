@@ -92,19 +92,7 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 - [Docker](https://docs.docker.com/get-docker/) installed and running
 - Node.js 18+ and npm/yarn/pnpm
 
-### Quick Start (Automated Setup)
-
-```bash
-# Clone the repository
-git clone https://github.com/DinicaMadalin/dooh-platform.git
-cd dooh-platform
-
-# Run setup script (macOS/Linux)
-chmod +x setup.sh
-./setup.sh
-```
-
-### Manual Setup
+### Setup
 
 #### 1. Clone the Repository
 
