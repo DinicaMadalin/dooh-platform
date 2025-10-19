@@ -23,7 +23,7 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 ## 🛠 Tech Stack
 
 ### Frontend
-- **Next.js 14** (App Router) - React framework with SSR
+- **Next.js 15** (App Router) - React framework with SSR
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
 - **Recharts** - Data visualization
