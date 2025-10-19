@@ -233,16 +233,13 @@ docker-compose down -v
 1. **Deployment** ⚠️
    - Deploy frontend to Vercel
    - Deploy worker as Vercel Cron Job or separate service (Railway, Render)
-   - Configure production environment variables
    - Add health check endpoints
 
 2. **Error Handling**
    - Add retry logic for failed events
    - Dead letter queue for permanently failed events
    - Better error messages in UI
-   - Sentry integration for error tracking
 
 3. **Testing**
    - Unit tests for queue operations
    - Integration tests for API endpoints
-   - Worker process tests with mock Redis
