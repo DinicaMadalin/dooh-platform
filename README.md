@@ -13,8 +13,8 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 ✅ **Auto-refresh** - Dashboard updates automatically every few seconds  
 
 ### Bonus Features Implemented
-✅ **PostgreSQL Storage** - Persistent event storage in Supabase  
-✅ **Redis Queue** - Reliable message queue with Upstash  
+✅ **PostgreSQL Storage** - Persistent event storage  
+✅ **Redis Queue** - Reliable message queue  
 ✅ **Bar Chart Visualization** - Visual representation of play counts  
 ✅ **Per-Screen Breakdown** - Detailed impressions by screen ID  
 ✅ **Pause/Resume Processing** - Toggle to control worker processing  
@@ -32,13 +32,12 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 ### Backend
 - **Next.js API Routes** - RESTful endpoints
 - **Node.js Worker** - Background job processor
-- **PostgreSQL** (Supabase) - Event and campaign storage
-- **Redis** (Upstash) - Message queue and cache
+- **PostgreSQL** - Event and campaign storage
+- **Redis** - Message queue and cache
 
 ### Infrastructure
-- **Vercel** (ready for deployment)
-- **Supabase** - Database hosting
-- **Upstash** - Redis hosting
+- **Docker** - Local PostgreSQL and Redis
+- **Docker Compose** - Container orchestration
 
 ## 🏗 Architecture Overview
 
@@ -74,11 +73,11 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
                          ▼       ▼
                     ┌─────────────────┐
                     │   PostgreSQL    │
-                    │   (Supabase)    │
+                    │    (Docker)     │
                     │                 │
                     │ - events table  │
                     │ - campaigns     │
-                    │ - play_stats    │
+                    │ - screens       │
                     └─────────────────┘
 ```
 
@@ -92,45 +91,64 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 
 ### Prerequisites
 
+- [Docker](https://docs.docker.com/get-docker/) installed and running
 - Node.js 18+ and npm/yarn/pnpm
-- Supabase account (free tier works)
-- Upstash Redis account (free tier works)
 
-### 1. Clone the Repository
+### Quick Start (Automated Setup)
+
+```bash
+# Clone the repository
+git clone https://github.com/DinicaMadalin/dooh-platform.git
+cd dooh-platform
+
+# Run setup script (macOS/Linux)
+chmod +x setup.sh
+./setup.sh
+```
+
+### Manual Setup
+
+#### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/DinicaMadalin/dooh-platform.git
 cd dooh-platform
 ```
 
-### 2. Install Dependencies
+#### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Environment Setup
+#### 3. Start Docker Containers
+
+```bash
+docker-compose up -d
+```
+
+This will start:
+- PostgreSQL on port 5432
+- Redis on port 6379
+
+#### 4. Environment Setup
 
 Create `.env.local` in the root directory:
 
 ```env
-# Supabase Configuration
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:5432/postgres
+# PostgreSQL (Docker)
+DATABASE_URL=postgresql://dooh_user:dooh_password@localhost:5432/dooh_platform
 
-# Upstash Redis Configuration
-UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url
-UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
+# Redis (Docker)
+REDIS_URL=redis://localhost:6379
 ```
 
-### 4. Database Setup
-
-**Option - Terminal (psql):**
+Or simply:
 ```bash
-psql "postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:5432/postgres"
-# then query(SELECT * FROM <TABLE>)
+cp .env.example .env.local
 ```
 
-### 5. Start Development Server
+#### 5. Start Development Server
 
 ```bash
 npm run dev
@@ -138,7 +156,7 @@ npm run dev
 
 The app will be available at **http://localhost:3000**
 
-### 6. Start Background Worker
+#### 6. Start Background Worker
 
 In a **separate terminal**:
 
@@ -148,13 +166,47 @@ npm run dev:worker
 
 The worker will start processing events from the Redis queue every 3 seconds.
 
-### 7. Using the Application
+### Database Access (Optional)
+
+**Access PostgreSQL directly:**
+```bash
+docker exec -it dooh-postgres psql -U dooh_user -d dooh_platform
+
+# Example queries:
+SELECT * FROM campaigns;
+SELECT * FROM events ORDER BY id DESC LIMIT 10;
+```
+
+**Access Redis CLI:**
+```bash
+docker exec -it dooh-redis redis-cli
+
+# Check queue length:
+LLEN events_queue
+
+# View worker status:
+GET worker:paused
+```
+
+### Using the Application
 
 1. Open http://localhost:3000 in your browser
-2. Click **"Simulate Event"** to generate random play events
+2. Click **"Generate Event"** to generate random play events
 3. Watch the dashboard auto-refresh and update play counts
 4. Use **"Pause/Resume Processing"** to control the worker
 5. View the bar chart visualization and per-screen breakdown
+
+### Stopping the Application
+
+```bash
+# Stop Next.js and worker (Ctrl+C in each terminal)
+
+# Stop Docker containers
+docker-compose down
+
+# Stop and remove all data (fresh start)
+docker-compose down -v
+```
 
 
 ## ⏱ Time Spent
@@ -163,9 +215,9 @@ The worker will start processing events from the Redis queue every 3 seconds.
 |-------|-------|-------------|
 | **Planning** | Architecture design, tech stack research | 30 min |
 | **Project Setup** | Next.js init, dependencies, environment | 20 min |
-| **Database Schema** | Supabase setup, table design, test data | 40 min |
+| **Database Schema** | Docker setup, table design, test data | 40 min |
 | **API Endpoints** | API's setup validation | 1h 15min |
-| **Redis Integration** | Upstash setup, queue operations | 30 min |
+| **Redis Integration** | Docker setup, queue operations | 30 min |
 | **Worker Process** | Background job processor | 1h 00min |
 | **Frontend UI** | Dashboard layout, components, styling | 1h 30min |
 | **Data Visualization** | Recharts integration, bar chart | 45 min |
@@ -177,7 +229,6 @@ The worker will start processing events from the Redis queue every 3 seconds.
 **Note**: Exceeded the suggested 4 hours to implement bonus features (database storage, charts, per-screen stats, pause/resume). Core functionality alone would fit in ~4-5 hours.
 
 ## 🚀 Potential Improvements
-
 
 1. **Deployment** ⚠️
    - Deploy frontend to Vercel
