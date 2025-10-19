@@ -4,9 +4,7 @@ import type { Event, Campaign } from "./types.ts"
 
 export async function addEvent(event: Event): Promise<void> {
   const client = await pool.connect();
-  console.log("Inserting event into DB:", event)
   try {
-
     await client.query(
       `INSERT INTO events(screen_id, campaign_id, timestamp) VALUES($1, $2, $3)`,
       [event.screen_id, event.campaign_id, event.timestamp]
@@ -19,7 +17,6 @@ export async function addEvent(event: Event): Promise<void> {
   } finally {
     client.release();
   }
-
 }
 
 export async function getCampaigns(): Promise<Campaign[]> {

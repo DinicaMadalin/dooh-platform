@@ -1,0 +1,35 @@
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: dooh-postgres
+    environment:
+      POSTGRES_USER: dooh_user
+      POSTGRES_PASSWORD: dooh_password
+      POSTGRES_DB: dooh_platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dooh_user -d dooh_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: dooh-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
