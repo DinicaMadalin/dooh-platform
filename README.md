@@ -48,17 +48,20 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 │  Dashboard  │
 └──────┬──────┘
        │ GET /campaigns (auto-refresh)
+       | GET /screens (auto-refresh)
        │ POST /events (simulate)
        ▼
 ┌─────────────────────────────────────┐
 │        Next.js API Routes           │
-│  ┌────────────┐    ┌─────────────┐ │
-│  │POST /events│───▶│ Redis Queue │ │
-│  └────────────┘    └─────────────┘ │
+│  ┌────────────┐    ┌─────────────┐  │
+│  │POST /events│───▶│ Redis Queue│  │
+│  └────────────┘    └─────────────┘  │
 │                          │          │
 │  ┌────────────┐          │          │
-│  │GET /camps  │          │          │
-│  │  (reads)   │◀─────────┼─────┐    │
+│  │GET         |          |          |
+|  | /campaigns |          |          |
+|  │ /screens   │          │          |
+│  │            │◀────────┼─────┐    │
 │  └────────────┘          │     │    │
 └──────────────────────────┼─────┼────┘
                            │     │
@@ -153,42 +156,6 @@ The worker will start processing events from the Redis queue every 3 seconds.
 4. Use **"Pause/Resume Processing"** to control the worker
 5. View the bar chart visualization and per-screen breakdown
 
-## 🎯 Tech Choices & Rationale
-
-### Why Next.js?
-
-- **Full-stack in one repo**: API routes + frontend without separate backend server
-- **TypeScript support**: Built-in type safety for both client and server
-- **API Routes**: Simple REST endpoints without Express.js setup
-- **App Router**: Modern React patterns with Server Components
-- **Fast development**: Hot reload, file-based routing, zero config
-
-### Why PostgreSQL (Supabase)?
-
-- **Assignment requirement**: Store events in a database (bonus feature)
-- **Relational model**: Natural fit for campaigns → events → stats relationships
-- **Free tier**: Generous limits for development and demos
-- **Real-time capabilities**: Could enable live updates without polling (future improvement)
-- **SQL familiarity**: Standard SQL for aggregations and queries
-- **Production-ready**: Not just a dev database like SQLite
-
-### Why Redis (Upstash)?
-
-- **Queue requirement**: Assignment needs async job queue
-- **Serverless-friendly**: HTTP-based Redis works with serverless functions
-- **Reliability**: Persisted queue survives restarts
-- **Better than in-memory**: Events aren't lost if server crashes
-- **Free tier**: 10,000 commands/day sufficient for demo
-- **Simple API**: Push/pop operations without complex setup
-
-### Why Node.js Worker?
-
-- **Async processing requirement**: Core requirement of the assignment
-- **Separation of concerns**: Decouples event ingestion from processing
-- **Scalability**: Can run multiple workers or on separate instance
-- **Simple implementation**: No need for heavy frameworks like Bull or BeeQueue
-- **Batch processing**: Process multiple events efficiently
-- **Controllable**: Easy to pause/resume for debugging
 
 ## ⏱ Time Spent
 
@@ -228,29 +195,3 @@ The worker will start processing events from the Redis queue every 3 seconds.
    - Unit tests for queue operations
    - Integration tests for API endpoints
    - Worker process tests with mock Redis
-
-
-## 📝 Assignment Compliance Checklist
-
-### Core Requirements ✅
-- ✅ POST /events endpoint accepts play events
-- ✅ Events added to Redis queue
-- ✅ Background process reads from queue asynchronously
-- ✅ Updates campaign stats in-memory (PostgreSQL)
-- ✅ GET /campaigns returns all campaigns with play counts
-- ✅ Frontend displays campaigns and counts
-- ✅ "Simulate Event" button generates random events
-- ✅ Auto-refresh updates dashboard every few seconds
-
-### Bonus Features ✅
-- ✅ Events stored in database (PostgreSQL/Supabase)
-- ✅ Play counts visualized as bar chart
-- ✅ Impressions per screen breakdown
-- ✅ Toggle to pause/resume processing
-- ⚠️ Deployment (not completed)
-
-### Technical Requirements ✅
-- ✅ Both frontend and backend included
-- ✅ Demonstrates asynchronous job handling
-- ✅ Clear and organized code structure
-- ✅ Good separation of concerns
