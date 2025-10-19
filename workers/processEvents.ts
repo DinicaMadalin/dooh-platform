@@ -26,7 +26,7 @@ async function processQueue() {
 
       await addEvent(event);
     } catch (err) {
-      console.log("Error processing event: ", err);
+      console.error("Error processing event: ", err);
     }
   }
 }
