@@ -16,7 +16,6 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 ✅ **PostgreSQL Storage** - Persistent event storage  
 ✅ **Redis Queue** - Reliable message queue  
 ✅ **Bar Chart Visualization** - Visual representation of play counts  
-✅ **Per-Screen Breakdown** - Detailed impressions by screen ID  
 ✅ **Pause/Resume Processing** - Toggle to control worker processing  
 ⚠️ **Deployment** - Not completed (see improvements section)
 
@@ -27,13 +26,12 @@ A full-stack Digital Out-of-Home (DOOH) platform that simulates real-time ad pla
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
 - **Recharts** - Data visualization
-- **shadcn/ui** - UI components
 
 ### Backend
 - **Next.js API Routes** - RESTful endpoints
 - **Node.js Worker** - Background job processor
-- **PostgreSQL** - Event and campaign storage
-- **Redis** - Message queue and cache
+- **PostgreSQL** - Events,campaigns, and screens storage
+- **Redis** - Events queue
 
 ### Infrastructure
 - **Docker** - Local PostgreSQL and Redis
