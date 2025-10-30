@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { Campaign, Screens, Event, WorkerStatus } from "../../lib/types.ts";
 
